@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="height: 100%;width: 100%">
 <head>
     <meta charset="UTF-8">
     <title>五子棋</title>
 </head>
 <body style="width: 100%;height: 100%">
 <canvas id="canvas" style="display: block;width: 100%;"></canvas>
-
+<button id="btn" style="position:absolute;bottom: 10%;width: 20%;height: 10%;left: 40%;font-size: 25px;">重新开始</button>
 <script type="text/javascript">
 
     var over = false; //表示是否有人赢了
@@ -22,6 +22,7 @@
     canvas.height = 490;
     canvas.width = 490;
     var context = canvas.getContext('2d');
+    var bgimg = new Image();
     var me = true;
     var chessBox = [];//用于存放棋盘中落子的情况
     for(var i=0;i<15;i++){
@@ -31,12 +32,38 @@
         }
     }
 
-    winmeth();
 
-    var bgimg = new Image();
-    bgimg.src = 'https://github.com/bjhan/five-in-a-row/blob/master/2.jpg?raw=true';
-    bgimg.onload = function () {
-        checkerboard();
+
+    init();//初始化棋盘
+
+    document.getElementById('btn').onclick = function(){//重新开始
+
+        init();
+    }
+    function init(){
+        over = false; //表示是否有人赢了
+
+        //赢法的统计数组
+        myWin = [];
+        computerWin = [];
+        count = 0; //赢法总数
+        wins = [];
+        me = true;
+        chessBox = [];//用于存放棋盘中落子的情况
+        for(var i=0;i<15;i++){
+            chessBox[i]=[];
+            for(var j=0;j<15;j++){
+                chessBox[i][j]=0;//初始值为0
+            }
+        }
+        winmeth();//获胜的标准
+
+        context.clearRect(0,0,canvas.width,canvas.height);
+
+        bgimg.src = '1.png';
+        bgimg.onload = function () {
+            checkerboard();
+        }
     }
     function checkerboard() {
         context.save();
